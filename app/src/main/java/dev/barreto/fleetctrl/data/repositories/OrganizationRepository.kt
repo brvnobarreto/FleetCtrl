@@ -8,6 +8,7 @@ import dev.barreto.fleetctrl.data.models.UserOrganization
 import kotlinx.coroutines.tasks.await
 import java.util.Date
 import javax.inject.Inject
+import android.util.Log
 import javax.inject.Singleton
 
 @Singleton
@@ -146,6 +147,7 @@ class OrganizationRepository @Inject constructor(
                 return Result.success("Você já é membro desta organização")
             }
             
+            Log.d("OrgRepo", "joinOrganization: user=${currentUser.uid} code=$code org=${organization.id}")
             // Criar vínculo diretamente
             createUserOrganizationLink(
                 userId = currentUser.uid,
@@ -153,6 +155,7 @@ class OrganizationRepository @Inject constructor(
                 role = "viewer",
                 userEmail = currentUser.email ?: ""
             )
+            Log.d("OrgRepo", "joinOrganization: creating owner notification owner=${organization.ownerId}")
             // Criar notificação para o OWNER da organização
             try {
                 val title = "Novo membro na organização"
@@ -168,6 +171,7 @@ class OrganizationRepository @Inject constructor(
                     relatedUserEmail = currentUser.email
                 )
                 notificationRepository.createNotification(notif)
+                Log.d("OrgRepo", "joinOrganization: owner notification created id=${notif.id}")
             } catch (_: Exception) {}
             
             Result.success("Entrada na organização realizada com sucesso!")

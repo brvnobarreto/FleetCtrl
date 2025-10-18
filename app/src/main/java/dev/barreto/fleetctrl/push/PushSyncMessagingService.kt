@@ -12,6 +12,7 @@ import dev.barreto.fleetctrl.data.repositories.NotificationRepository
 import dev.barreto.fleetctrl.data.database.entities.Notification
 import dev.barreto.fleetctrl.data.database.entities.NotificationType
 import dev.barreto.fleetctrl.utils.NotificationHelper
+import android.util.Log
 
 /**
  * Firebase Messaging Service para receber eventos de "push to sync" específicos
@@ -27,6 +28,7 @@ class PushSyncMessagingService : FirebaseMessagingService() {
     @Inject lateinit var notificationRepository: NotificationRepository
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        Log.d("PushSync", "onMessageReceived: data=${remoteMessage.data}")
         val scope = remoteMessage.data["scope"]
         val orgId = remoteMessage.data["orgId"]
         val type = remoteMessage.data["type"] // e.g., maintenance_due, user_joined
@@ -34,7 +36,10 @@ class PushSyncMessagingService : FirebaseMessagingService() {
         val message = remoteMessage.data["message"]
         val userId = remoteMessage.data["userId"]
 
-        if (scope.isNullOrBlank() || orgId.isNullOrBlank()) return
+        if (scope.isNullOrBlank() || orgId.isNullOrBlank()) {
+            Log.w("PushSync", "Missing required fields scope or orgId; scope=$scope orgId=$orgId")
+            return
+        }
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -43,10 +48,11 @@ class PushSyncMessagingService : FirebaseMessagingService() {
                     "fuel", "fuel_records" -> syncRepository.triggerScopeSync("fuel", orgId)
                     "activity", "activity_records", "diary" -> syncRepository.triggerScopeSync("activity", orgId)
                     "maintenance", "maintenance_records" -> syncRepository.triggerScopeSync("maintenance", orgId)
-                    else -> Unit
+                    else -> Log.d("PushSync", "Unknown scope=$scope, skipping sync")
                 }
                 // Criação de notificação local (in-app + push) se dados presentes
                 if (!userId.isNullOrBlank() && !type.isNullOrBlank() && !title.isNullOrBlank() && !message.isNullOrBlank()) {
+                    Log.d("PushSync", "Creating local notification userId=$userId type=$type title=$title")
                     val notif = Notification(
                         id = System.currentTimeMillis().toString(),
                         userId = userId,
@@ -60,16 +66,23 @@ class PushSyncMessagingService : FirebaseMessagingService() {
                         message = message,
                         isActionable = false
                     )
-                    try { notificationRepository.createNotification(notif) } catch (_: Exception) {}
+                    try {
+                        notificationRepository.createNotification(notif)
+                        Log.d("PushSync", "Notification persisted id=${notif.id}")
+                    } catch (e: Exception) {
+                        Log.e("PushSync", "Failed to persist notification: ${e.message}", e)
+                    }
                     NotificationHelper.show(
                         context = this@PushSyncMessagingService,
                         notificationId = (System.currentTimeMillis() % Int.MAX_VALUE).toInt(),
                         title = title,
                         message = message
                     )
+                } else {
+                    Log.d("PushSync", "No local notification created (userId/type/title/message missing)")
                 }
-            } catch (_: Exception) {
-                // Evita crash; logs podem ser adicionados conforme necessidade
+            } catch (e: Exception) {
+                Log.e("PushSync", "Error handling push: ${e.message}", e)
             }
         }
     }
