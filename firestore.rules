@@ -1,0 +1,88 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function memberDoc(orgId) {
+      return get(/databases/$(database)/documents/user_organizations/$(request.auth.uid + '_' + orgId));
+    }
+
+    function hasMemberDoc(orgId) {
+      return exists(/databases/$(database)/documents/user_organizations/$(request.auth.uid + '_' + orgId));
+    }
+
+    function isMember(orgId) {
+      // Legado: considera membro se existe vínculo, mesmo sem isActive
+      return isSignedIn() && hasMemberDoc(orgId) && (memberDoc(orgId).data.isActive == null || memberDoc(orgId).data.isActive != false);
+    }
+
+    function memberRoleLower(orgId) {
+      // Normaliza o campo role para minúsculas (se ausente, retorna "")
+      return lower((memberDoc(orgId).data.role == null) ? '' : memberDoc(orgId).data.role);
+    }
+
+    function isOrgOwner(orgId) {
+      // Dono da organização (fallback caso user_organizations ainda não esteja OK)
+      return isSignedIn() && exists(/databases/$(database)/documents/organizations/$(orgId)) &&
+             get(/databases/$(database)/documents/organizations/$(orgId)).data.ownerId == request.auth.uid;
+    }
+
+    function isEditor(orgId) {
+      // Aceita roles com variação de maiúsculas/minúsculas
+      return (isMember(orgId) && (memberRoleLower(orgId) in ['owner', 'editor'])) || isOrgOwner(orgId);
+    }
+
+    // user_organizations
+    match /user_organizations/{memberId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && (
+        // o próprio usuário pode atualizar/remover seu vínculo
+        request.auth.uid == resource.data.userId ||
+        // owners/editors da organização também podem gerenciar
+        isEditor(resource.data.organizationId)
+      );
+    }
+
+    // organizations e subcoleções aninhadas
+    match /organizations/{orgId} {
+      // leitura do doc da org permitida a qualquer usuário autenticado (necessário para seleção/listen)
+      allow read: if isSignedIn();
+      // criar org: o owner deve ser o usuário logado
+      allow create: if isSignedIn() && request.auth.uid == request.resource.data.ownerId;
+      // atualizar/excluir org: somente editor/owner
+      allow update, delete: if isEditor(orgId);
+
+      // veículos e subcoleções aninhadas
+      match /vehicles/{vehicleId} {
+        allow read: if isSignedIn();
+        // Seguro: somente editor/owner
+        allow write: if isEditor(orgId) || isOrgOwner(orgId);
+
+        // abastecimentos do veículo
+        match /fuel_records/{fuelId} {
+          allow read: if isMember(orgId);
+          // Seguro: somente editor/owner ou owner da org
+          allow write: if isEditor(orgId) || isOrgOwner(orgId);
+        }
+
+        // atividades (diário) do veículo
+        match /activity_records/{activityId} {
+          allow read: if isMember(orgId);
+          // Seguro: somente editor/owner ou owner da org
+          allow write: if isEditor(orgId) || isOrgOwner(orgId);
+        }
+
+        // manutenções do veículo
+        match /maintenance_records/{maintId} {
+          allow read: if isMember(orgId);
+          // Seguro: somente editor/owner ou owner da org
+          allow write: if isEditor(orgId) || isOrgOwner(orgId);
+        }
+      }
+    }
+  }
+}

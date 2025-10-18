@@ -1,0 +1,473 @@
+<resources>
+    <string name="app_name">FleetCtrl</string>
+
+    <!-- Firebase Configuration -->
+    <string name="default_web_client_id">739725114315-dflaak6lleg9l9af9prjm0pdtli9gk8i.apps.googleusercontent.com</string>
+
+    <!-- Navigation -->
+    <string name="nav_diary">Diário de Bordo</string>
+    <string name="nav_home">Início</string>
+    <string name="nav_fuel">Abastecimentos</string>
+    <string name="nav_maintenance">Manutenções</string>
+    <string name="nav_fleet">Frota</string>
+    <string name="nav_profile">Perfil</string>
+
+    <!-- Profile Menu -->
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_settings">Configurações</string>
+
+    <!-- Screen Titles -->
+    <string name="title_diary">Diário de Bordo</string>
+    <string name="title_home">Visão Geral</string>
+    <string name="title_fuel">Abastecimentos</string>
+    <string name="title_maintenance">Manutenções</string>
+    <string name="title_fleet">Frota de Veículos</string>
+    <string name="title_profile">Perfil</string>
+    <string name="title_settings">Configurações</string>
+    <string name="title_theme">Tema</string>
+
+    <!-- Content Placeholders -->
+    <string name="diary_content">Conteúdo do Diário de Bordo</string>
+    <string name="fuel_content">Conteúdo dos Abastecimentos</string>
+    <string name="maintenance_content">Conteúdo das Manutenções</string>
+    <string name="fleet_content">Conteúdo da Frota de Veículos</string>
+    <string name="profile_content">Conteúdo do Perfil</string>
+    <string name="settings_content">Conteúdo das Configurações</string>
+
+    <!-- Fuel Screen -->
+    <string name="fuel_empty_title">Nenhum Veículo Encontrado</string>
+    <string name="fuel_empty_description">Cadastre veículos na frota para gerenciar abastecimentos</string>
+    <string name="fuel_vehicle_fuel_title">Abastecimentos - %1$s</string>
+    <string name="fuel_empty_records">Nenhum abastecimento registrado</string>
+    <string name="fuel_add_record">Adicionar Abastecimento</string>
+
+    <!-- Fuel Record Dialog -->
+    <string name="fuel_dialog_title">Novo Abastecimento</string>
+    <string name="fuel_dialog_edit_title">Editar Abastecimento</string>
+    <string name="fuel_dialog_save">Salvar</string>
+    <string name="fuel_dialog_update">Atualizar</string>
+    <string name="fuel_dialog_cancel">Cancelar</string>
+    <string name="fuel_dialog_date">Data e Hora</string>
+    <string name="fuel_dialog_supplier">Fornecedor</string>
+    <string name="fuel_dialog_driver">Motorista</string>
+    <string name="fuel_dialog_plate">Placa</string>
+    <string name="fuel_dialog_mileage">Quilometragem Atual</string>
+    <string name="fuel_dialog_fuel_type">Tipo de Combustível</string>
+    <string name="fuel_dialog_quantity">Quantidade (Litros)</string>
+    <string name="fuel_dialog_price_per_liter">Preço por Litro (R$)</string>
+    <string name="fuel_dialog_quantity_hint">Ex: 45,5 ou 45.5</string>
+    <string name="fuel_dialog_price_hint">Ex: 5,89 ou 5.89</string>
+    <string name="fuel_dialog_total_cost">Custo Total (R$)</string>
+    <string name="fuel_dialog_location">Localização (GPS)</string>
+    <string name="fuel_dialog_location_button">Capturar Localização</string>
+    <string name="fuel_dialog_location_captured">Localização capturada</string>
+    <string name="fuel_dialog_location_not_available">GPS não disponível</string>
+    <string name="fuel_dialog_notes">Observações</string>
+
+    <!-- Fuel Types -->
+    <string name="fuel_type_gasoline_common">Gasolina Comum</string>
+    <string name="fuel_type_gasoline_additive">Gasolina Aditivada</string>
+    <string name="fuel_type_gasoline_premium">Gasolina Premium</string>
+    <string name="fuel_type_ethanol_hydrated">Etanol Hidratado</string>
+    <string name="fuel_type_ethanol_anhydrous">Etanol Anidro</string>
+    <string name="fuel_type_diesel_common">Diesel Comum</string>
+    <string name="fuel_type_diesel_s10">Diesel S-10</string>
+    <string name="fuel_type_diesel_s500">Diesel S-500</string>
+    <string name="fuel_type_diesel_b5">Diesel B5</string>
+    <string name="fuel_type_diesel_b10">Diesel B10</string>
+    <string name="fuel_type_diesel_b15">Diesel B15</string>
+    <string name="fuel_type_diesel_b20">Diesel B20</string>
+    <string name="fuel_type_gnv">GNV (Gás Natural Veicular)</string>
+    <string name="fuel_type_glp">GLP (Gás Liquefeito de Petróleo)</string>
+    <string name="fuel_type_flex">Flex (Gasolina + Etanol)</string>
+    <string name="fuel_type_electric">Elétrico</string>
+    <string name="fuel_type_hybrid_gasoline">Híbrido (Gasolina + Elétrico)</string>
+    <string name="fuel_type_hybrid_diesel">Híbrido (Diesel + Elétrico)</string>
+    <string name="fuel_type_hybrid_flex">Híbrido Flex</string>
+    <string name="fuel_type_hydrogen">Hidrogênio</string>
+
+    <!-- Fuel Record Item -->
+    <string name="fuel_record_quantity">%1$.1f L</string>
+    <string name="fuel_record_cost">R$ %1$.2f</string>
+    <string name="fuel_record_price_per_liter">R$ %1$.2f/L</string>
+    <string name="fuel_record_supplier">%1$s</string>
+    <string name="fuel_record_location">%1$s</string>
+
+    <!-- Theme Screen -->
+    <string name="theme_choose_title">Escolha o Tema</string>
+    <string name="theme_choose_description">Selecione como você quer que o app apareça</string>
+    <string name="theme_color_palette_title">Paleta de Cores</string>
+    <string name="theme_color_palette_description">Escolha uma paleta de cores para personalizar o visual</string>
+    <string name="theme_applied_title">Tema Aplicado</string>
+    <string name="theme_applied_description">As mudanças de tema e paleta de cores são aplicadas imediatamente em todo o aplicativo.</string>
+
+    <!-- Theme Options -->
+    <string name="theme_light">Claro</string>
+    <string name="theme_light_description">Tema claro para uso durante o dia</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_dark_description">Tema escuro para uso à noite</string>
+    <string name="theme_system">Automático</string>
+    <string name="theme_system_description">Segue as configurações do sistema</string>
+
+    <!-- Color Palettes -->
+    <string name="palette_system">Sistema</string>
+    <string name="palette_purple">Roxo</string>
+    <string name="palette_blue">Azul</string>
+    <string name="palette_neutral">Neutro</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_app_title">Configurações do App</string>
+    <string name="settings_connectivity_title">Conectividade</string>
+    <string name="settings_theme_option">Tema</string>
+    <string name="settings_theme_subtitle">Claro, Escuro ou Automático</string>
+    <string name="settings_theme_value">Automático</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_avatar_user">Avatar do Usuário</string>
+    <string name="cd_profile">Perfil</string>
+    <string name="cd_fleet">Frota de Veículos</string>
+    <string name="cd_maintenance">Manutenções</string>
+    <string name="cd_fuel">Abastecimentos</string>
+    <string name="cd_palette_system">Paleta do Sistema</string>
+    <string name="cd_expand">Expandir</string>
+    <string name="cd_collapse">Recolher</string>
+    <string name="cd_edit">Editar</string>
+    <string name="cd_delete">Excluir</string>
+    <string name="cd_close">Fechar</string>
+    <string name="cd_photo">Foto do veículo</string>
+    <string name="cd_car">Veículo</string>
+    <string name="cd_add_photo">Adicionar foto</string>
+    <string name="cd_year_select">Selecionar ano</string>
+    <string name="cd_confirm">Confirmar</string>
+    <string name="cd_cancel">Cancelar</string>
+    <string name="cd_gallery">Galeria</string>
+    <string name="cd_add">Adicionar</string>
+    <string name="cd_vehicle_photo">Foto do Veículo</string>
+
+
+    <!-- Preview Content -->
+    <string name="preview_blue_palette">Teste - Paleta Azul</string>
+    <string name="preview_neutral_palette">Teste - Paleta Neutra</string>
+
+    <!-- Vehicle Dialog -->
+    <string name="vehicle_dialog_add_title">Adicionar Veículo</string>
+    <string name="vehicle_dialog_edit_title">Editar Veículo</string>
+    <string name="vehicle_dialog_vehicle_number_label">Número do Veículo</string>
+    <string name="vehicle_dialog_vehicle_number_placeholder">Ex: V001</string>
+    <string name="vehicle_dialog_model_label">Modelo</string>
+    <string name="vehicle_dialog_model_placeholder">Ex: Civic</string>
+    <string name="vehicle_dialog_brand_label">Marca</string>
+    <string name="vehicle_dialog_brand_placeholder">Ex: Honda</string>
+    <string name="vehicle_dialog_year_label">Ano</string>
+    <string name="vehicle_dialog_year_placeholder">Ex: 2023</string>
+    <string name="vehicle_dialog_year_select">Selecionar ano</string>
+    <string name="vehicle_dialog_plate_label">Placa</string>
+    <string name="vehicle_dialog_plate_placeholder">Ex: ABC1234</string>
+    <string name="vehicle_dialog_driver_label">Condutor</string>
+    <string name="vehicle_dialog_driver_placeholder">Ex: João Silva</string>
+    <string name="vehicle_dialog_show_diary">Mostrar no Diário de Bordo</string>
+    <string name="vehicle_dialog_save">Salvar</string>
+    <string name="vehicle_dialog_cancel">Cancelar</string>
+    <string name="vehicle_dialog_photo_add">Tirar Foto / Galeria</string>
+    <string name="vehicle_dialog_photo_description">Foto do veículo</string>
+    <string name="vehicle_dialog_photo_add_description">Adicionar foto</string>
+    <string name="vehicle_dialog_year_select_title">Selecionar Ano</string>
+    <string name="vehicle_dialog_year_select_text">Ano: %d</string>
+    <string name="vehicle_dialog_year_confirm">Confirmar</string>
+    <string name="vehicle_dialog_photo_select_title">Selecionar Foto</string>
+    <string name="vehicle_dialog_photo_select_text">Escolha como deseja adicionar a foto do veículo:</string>
+    <string name="vehicle_dialog_photo_gallery">Galeria</string>
+    <string name="vehicle_dialog_color_default">Não especificada</string>
+    <string name="vehicle_dialog_engine_default">Gasolina</string>
+
+    <!-- Vehicle Detail Card -->
+    <string name="vehicle_detail_close">Fechar</string>
+    <string name="vehicle_detail_edit">Editar</string>
+    <string name="vehicle_detail_delete">Excluir</string>
+    <string name="vehicle_detail_photo_description">Foto do veículo</string>
+    <string name="vehicle_detail_car_description">Veículo</string>
+    <string name="vehicle_detail_driver_label">Condutor</string>
+    <string name="vehicle_detail_visible_diary">Visível no Diário</string>
+    <string name="vehicle_detail_hidden_diary">Oculto no Diário</string>
+    <string name="vehicle_detail_active">Ativo</string>
+    <string name="vehicle_detail_inactive">Inativo</string>
+    <string name="vehicle_detail_label_format">%s: </string>
+    <string name="vehicle_detail_fetch_image">Buscar imagem</string>
+    <string name="vehicle_detail_fetching_image">Buscando…</string>
+    <string name="vehicle_dialog_pick_photo">Tirar foto / Galeria</string>
+    <string name="vehicle_dialog_saving">Salvando…</string>
+    <string name="vehicle_image_select_title">Escolha uma imagem</string>
+    <string name="vehicle_image_select_subtitle">Selecionamos algumas imagens públicas. Toque em uma opção para usar.</string>
+    <string name="vehicle_image_no_results">Nenhuma imagem pública encontrada. Ajuste marca/modelo/ano e tente novamente.</string>
+    <string name="vehicle_image_fetch_error">Não foi possível buscar imagens no momento. Verifique sua conexão e tente novamente.</string>
+    <string name="vehicle_image_cancel">Cancelar</string>
+    <string name="vehicle_image_source">Fonte: %1$s</string>
+    <string name="vehicle_image_no_title">Imagem sem título</string>
+    <string name="vehicle_image_missing_data">Informe marca ou modelo para buscar imagens automaticamente.</string>
+    <string name="vehicle_image_copy_error">Erro ao copiar imagem selecionada.</string>
+
+
+    <!-- Vehicle List Item -->
+    <string name="vehicle_list_edit">Editar</string>
+    <string name="vehicle_list_delete">Excluir</string>
+    <string name="vehicle_list_photo_description">Foto do veículo</string>
+    <string name="vehicle_list_car_description">Veículo</string>
+
+    <!-- Floating FAB -->
+    <string name="fab_add">Adicionar</string>
+
+    <!-- App Header -->
+    <string name="header_avatar">U</string>
+    <string name="header_local_data">Dados locais</string>
+    <string name="header_saved_local">Dados salvos (locais)</string>
+    <string name="header_saved_org">Dados salvos e enviados para %1$s</string>
+    <string name="header_error_prefix">Erro: %1$s</string>
+    <string name="header_upload_disabled">⚠️ Upload desativado</string>
+
+    <!-- Header Hints per Screen -->
+    <string name="header_hint_diary">Registre saídas e chegadas dos veículos.</string>
+    <string name="header_hint_fuel">Gerencie abastecimentos da frota.</string>
+    <string name="header_hint_maintenance">Controle revisões e manutenção.</string>
+    <string name="header_hint_fleet">Gerencie os veículos da frota.</string>
+
+    <!-- Fleet Screen -->
+    <string name="fleet_empty_title">Nenhum veículo cadastrado</string>
+    <string name="fleet_empty_subtitle">Use o botão + no footer para adicionar seu primeiro veículo</string>
+    <string name="fleet_delete_title">Excluir Veículo</string>
+    <string name="fleet_delete_message">Tem certeza que deseja excluir o veículo %s? Esta ação não pode ser desfeita.</string>
+    <string name="fleet_delete_confirm">Excluir</string>
+    <string name="fleet_delete_cancel">Cancelar</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_expand">Expandir</string>
+    <string name="settings_collapse">Recolher</string>
+    <string name="settings_theme_title">Tema</string>
+
+    <!-- Theme Screen -->
+    <string name="theme_light_title">Claro</string>
+    <string name="theme_dark_title">Escuro</string>
+    <string name="theme_system_title">Automático</string>
+    <string name="theme_system_id">system</string>
+    <string name="theme_light_id">light</string>
+    <string name="theme_dark_id">dark</string>
+
+    <!-- Diary Screen -->
+    <string name="diary_empty_title">Nenhum veículo no diário</string>
+    <string name="diary_empty_subtitle">Marque veículos como "Mostrar no Diário" na tela de frotas</string>
+    <string name="diary_enabled">No Diário</string>
+
+    <!-- Vehicle Activity Screen -->
+    <string name="activity_empty_title">Nenhum registro encontrado</string>
+    <string name="activity_empty_subtitle">Use o botão + para adicionar o primeiro registro do veículo %s</string>
+
+    <!-- Activity Record Item -->
+    <string name="activity_record_mileage" formatted="false">%d → %d km</string>
+    <string name="activity_record_distance" formatted="false">Distância: %d km</string>
+
+    <!-- Activity Record Dialog -->
+    <string name="activity_dialog_title">Novo Registro de Atividade</string>
+    <string name="activity_dialog_edit_title">Editar Registro de Atividade</string>
+    <string name="activity_dialog_vehicle_info">Veículo</string>
+    <string name="activity_dialog_date">Data e Hora</string>
+    <string name="activity_dialog_driver">Condutor</string>
+    <string name="activity_dialog_driver_placeholder">Ex: João Silva</string>
+    <string name="activity_dialog_start_mileage">Quilômetro de Saída</string>
+    <string name="activity_dialog_start_mileage_placeholder">Ex: 10000</string>
+    <string name="activity_dialog_end_mileage">Quilômetro de Chegada</string>
+    <string name="activity_dialog_end_mileage_placeholder">Ex: 10050</string>
+    <string name="activity_dialog_observation">Observação</string>
+    <string name="activity_dialog_observation_placeholder">Ex: Viagem para São Paulo</string>
+    <string name="activity_dialog_save">Salvar</string>
+    <string name="activity_dialog_update">Atualizar</string>
+    <string name="activity_dialog_cancel">Cancelar</string>
+    <string name="activity_dialog_date_select">Selecionar Data e Hora</string>
+    <string name="activity_dialog_date_label">Data</string>
+    <string name="activity_dialog_time_label">Hora</string>
+    <string name="activity_dialog_confirm">Confirmar</string>
+
+    <!-- Maintenance Screen -->
+    <string name="maintenance_empty_title">Nenhum veículo encontrado</string>
+    <string name="maintenance_empty_subtitle">Cadastre veículos na frota para gerenciar manutenções</string>
+    <string name="maintenance_vehicle_maintenance_title">Manutenção - %s</string>
+    <string name="maintenance_next_revision">Próxima Revisão (km)</string>
+    <string name="maintenance_distance_to_dealer">Distância até Concessionária (km)</string>
+    <string name="maintenance_current_mileage">KM Atual: %s</string>
+    <string name="maintenance_min_date">Data Mínima: %s</string>
+    <string name="maintenance_max_date">Data Máxima: %s</string>
+    <string name="maintenance_history_title">Histórico de Revisões</string>
+    <string name="maintenance_no_observations">Sem observações</string>
+    <string name="maintenance_dialog_title">Nova Manutenção</string>
+    <string name="maintenance_dialog_edit_title">Editar Manutenção</string>
+    <string name="maintenance_dialog_save">Salvar</string>
+    <string name="maintenance_dialog_update">Atualizar</string>
+    <string name="maintenance_dialog_cancel">Cancelar</string>
+    <string name="maintenance_dialog_date">Data</string>
+    <string name="maintenance_dialog_min_revision_date">Data Mínima da Revisão</string>
+    <string name="maintenance_dialog_max_revision_date">Data Máxima da Revisão</string>
+    <string name="maintenance_dialog_revision_mileage">Quilometragem da Revisão</string>
+    <string name="maintenance_dialog_next_revision">Próxima Revisão (km)</string>
+    <string name="maintenance_dialog_distance_to_dealer">Distância até Concessionária (km)</string>
+    <string name="maintenance_dialog_notes">Observações</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_back">Voltar</string>
+    <string name="cd_date_select">Selecionar data</string>
+
+    <!-- Maintenance Carousel -->
+    <string name="maintenance_carousel_no_records">Nenhum Registro</string>
+    <string name="maintenance_carousel_record_count">Próxima Revisão</string>
+<!--    <string name="maintenance_carousel_record_count">Registro %1$d de %2$d</string>-->
+    <string name="maintenance_carousel_date">Data: %s</string>
+    <string name="maintenance_carousel_mileage">Quilometragem: %d km</string>
+    <string name="maintenance_carousel_next_revision">Próxima Revisão: %s</string>
+    <string name="maintenance_carousel_distance_to_dealer">Distância até Concessionária: %s</string>
+    <string name="maintenance_carousel_current_mileage">KM Atual: %s</string>
+    <string name="maintenance_carousel_min_date">Data Mínima: %s</string>
+    <string name="maintenance_carousel_max_date">Data Máxima: %s</string>
+    <string name="maintenance_carousel_observations">Observações: %s</string>
+    <string name="maintenance_carousel_empty">Nenhum registro de manutenção</string>
+    <string name="maintenance_carousel_na">N/A</string>
+    <string name="maintenance_carousel_km_format">%d km</string>
+
+    <!-- Maintenance Dialog -->
+    <string name="maintenance_dialog_next_revision_placeholder">Ex: 60000</string>
+    <string name="maintenance_dialog_revision_description">Revisão</string>
+
+    <!-- Maintenance Confirmation Dialog -->
+    <string name="maintenance_confirm_delete_title">Confirmar Exclusão</string>
+    <string name="maintenance_confirm_delete_message">Tem certeza que deseja excluir este registro de manutenção? Esta ação não pode ser desfeita.</string>
+    <string name="maintenance_confirm_delete_confirm">Excluir</string>
+    <string name="maintenance_confirm_delete_cancel">Cancelar</string>
+
+    <!-- Maintenance History -->
+    <string name="maintenance_history_no_observations">Sem observações</string>
+
+    <!-- Maintenance Empty State -->
+    <string name="maintenance_empty_records">Nenhum registro encontrado</string>
+    <string name="maintenance_empty_records_subtitle">Use o botão + para adicionar o primeiro registro do veículo %s</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_edit_maintenance">Editar</string>
+    <string name="cd_delete_maintenance">Remover</string>
+    <string name="cd_maintenance_icon">Manutenção</string>
+
+    <!-- Authentication -->
+    <string name="auth_welcome_title">FleetCtrl</string>
+    <string name="auth_welcome_subtitle">Gerencie sua frota de veículos</string>
+    <string name="auth_google_signin">Entrar com Google</string>
+    <string name="auth_loading">Carregando...</string>
+    <string name="auth_error">Erro ao fazer login</string>
+    <string name="auth_success">Login realizado com sucesso</string>
+    <string name="auth_logout">Sair</string>
+
+
+    <!-- Profile Screen -->
+    <string name="profile_google_signin">Entrou com Google</string>
+    <string name="profile_no_name">Nome não disponível</string>
+    <string name="profile_no_email">Email não disponível</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_first_name">Nome</string>
+    <string name="profile_last_name">Sobrenome</string>
+    <string name="profile_edit">Editar</string>
+    <string name="profile_save">Salvar</string>
+    <string name="profile_avatar">Avatar do usuário</string>
+
+    <!-- Connectivity Screen -->
+    <string name="connectivity_title">Conectividade</string>
+    <string name="notifications_title">Notificações</string>
+    <string name="connectivity_join">Entrar em Organização</string>
+    <string name="connectivity_create">Criar Organização</string>
+    <string name="connectivity_sync">Sincronizar</string>
+    <string name="connectivity_current_organization">Organização Atual</string>
+    <string name="connectivity_my_organizations">Minhas Organizações</string>
+    <string name="connectivity_leave">Sair</string>
+    <string name="connectivity_code">Código: %s</string>
+    <string name="connectivity_copy_code">Copiar código</string>
+    <string name="connectivity_owner_email">E-mail do responsável: %s</string>
+    <string name="connectivity_membership_email">Seu e-mail nesta organização: %s</string>
+    <string name="connectivity_organization_code">Código da Organização</string>
+    <string name="connectivity_organization_name">Nome da Organização</string>
+    <string name="connectivity_organization_description">Descrição (opcional)</string>
+    <string name="connectivity_max_members">Máximo de Membros</string>
+    <string name="connectivity_unlimited">Ilimitado</string>
+    <string name="connectivity_join_dialog_title">Entrar em Organização</string>
+    <string name="connectivity_join_dialog_message">Digite o código da organização que você deseja entrar:</string>
+    <string name="connectivity_create_dialog_title">Criar Organização</string>
+
+    <!-- Data Management -->
+    <string name="settings_data_title">Gerenciamento de Dados</string>
+    <string name="settings_upload_local_title">Enviar dados locais para a nuvem</string>
+    <string name="settings_upload_local_subtitle">Quando ativado, novos dados e alterações locais são enviados para a organização conectada.</string>
+    <string name="settings_clear_data">Limpar Todos os Dados</string>
+    <string name="settings_clear_data_subtitle">Remover todos os dados do app</string>
+    <string name="settings_clear_data_confirm_title">Confirmar Limpeza</string>
+    <string name="settings_clear_data_confirm_message">Tem certeza que deseja remover TODOS os dados do app? Esta ação não pode ser desfeita.</string>
+    <string name="settings_clear_data_confirm_yes">Sim, Remover Tudo</string>
+    <string name="settings_clear_data_confirm_no">Cancelar</string>
+    <string name="settings_clear_data_success">Todos os dados foram removidos com sucesso!</string>
+    <string name="settings_clear_data_error">Erro ao remover dados: %s</string>
+
+    <!-- Connectivity Screen -->
+    <string name="connectivity_subtitle">Gerenciar organizações e sincronização</string>
+    <string name="connectivity_no_org">Nenhuma organização selecionada</string>
+    <string name="connectivity_join_org">Entrar em Organização</string>
+    <string name="connectivity_create_org">Criar Organização</string>
+    <string name="connectivity_test_connection">Testar Conexão</string>
+    <string name="connectivity_join_dialog_code">Código da Organização</string>
+    <string name="connectivity_join_dialog_code_placeholder">Ex: ABC123</string>
+    <string name="connectivity_join_dialog_join">Entrar</string>
+    <string name="connectivity_cancel">Cancelar</string>
+    <string name="connectivity_organization_left">Você saiu da organização!</string>
+    <string name="connectivity_organization_created">Organização criada com sucesso!</string>
+    <string name="connectivity_organization_joined">Você entrou na organização!</string>
+    <string name="connectivity_error">Erro: %s</string>
+    <string name="connectivity_success">Sucesso!</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_organizations">Organizações</string>
+    <string name="settings_organizations_subtitle">Gerenciar organizações</string>
+
+    <!-- Home Screen -->
+    <string name="header_hint_home">Resumo das atividades, abastecimentos e manutenções</string>
+    <string name="home_section_overview">Resumo geral</string>
+    <string name="home_section_local">Dados locais</string>
+    <string name="home_section_org">Organização atual</string>
+    <string name="home_section_org_members">Membros ativos: %1$d</string>
+    <string name="home_metric_vehicles">Veículos</string>
+    <string name="home_metric_active_vehicles">Veículos ativos</string>
+    <string name="home_metric_avg_mileage">Km médio</string>
+    <string name="home_metric_trips">Viagens registradas</string>
+    <string name="home_metric_distance">Distância total</string>
+    <string name="home_metric_fuel_records">Abastecimentos</string>
+    <string name="home_metric_fuel_cost">Custo em combustível</string>
+    <string name="home_metric_fuel_volume">Litros abastecidos</string>
+    <string name="home_metric_maintenances">Manutenções</string>
+    <string name="home_metric_open_maintenances">Manutenções pendentes</string>
+    <string name="home_header_orgs">Organizações ativas: %1$d</string>
+    <string name="home_header_users">Usuários ativos: %1$d</string>
+    <string name="home_header_members">Vínculos ativos: %1$d</string>
+    <string name="home_member_summary_title">Atividade dos usuários</string>
+    <string name="home_last_update">Atualizado em %1$s</string>
+    <string name="home_quick_actions">Ações rápidas</string>
+    <string name="home_action_manage_fleet">Gerenciar frota</string>
+    <string name="home_action_open_diary">Abrir diário</string>
+    <string name="home_action_open_fuel">Ver abastecimentos</string>
+    <string name="home_action_open_maintenance">Ver manutenções</string>
+    <string name="home_empty_message">Nenhum dado registrado ainda. Utilize as ações rápidas para começar.</string>
+    <string name="home_sync_button">Sincronizar agora</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_confirm">Confirmar</string>
+    <string name="dialog_select_year">Selecionar Ano</string>
+    <string name="dialog_year">Ano: %d</string>
+    <string name="dialog_select_photo">Selecionar Foto</string>
+    <string name="dialog_photo_prompt">Escolha como deseja adicionar a foto do veículo:</string>
+    <string name="dialog_gallery">Galeria</string>
+    <string name="dialog_url">Adicionar URL</string>
+    <string name="dialog_url_title">Adicionar URL da Imagem</string>
+    <string name="dialog_url_prompt">Insira a URL da imagem do veículo.</string>
+    <string name="dialog_url_label">URL da Imagem</string>
+    <string name="dialog_url_cloud_note">Nota: Para serviços como Google Drive ou OneDrive, certifique-se de usar o link direto para a imagem, e não o link de compartilhamento.</string>
+
+</resources>

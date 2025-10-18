@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "739725114315",
+    "project_id": "fleetctrl-6a546",
+    "storage_bucket": "fleetctrl-6a546.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739725114315:android:a6f4bd9b00aed684c4d44e",
+        "android_client_info": {
+          "package_name": "dev.barreto.fleetctrl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739725114315-dflaak6lleg9l9af9prjm0pdtli9gk8i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.barreto.fleetctrl",
+            "certificate_hash": "8dcbacd7d6d83cdc2b80a89b8fcc41c2a057c3fd"
+          }
+        },
+        {
+          "client_id": "739725114315-0edetd175dlrr1ubevmrkm3l462q53ut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2G9ksv92bO_jPTtlpGlp2YqsR_VeXOog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739725114315-0edetd175dlrr1ubevmrkm3l462q53ut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

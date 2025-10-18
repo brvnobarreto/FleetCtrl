@@ -1,0 +1,577 @@
+package dev.barreto.fleetctrl.screens.settings
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import dev.barreto.fleetctrl.R
+import dev.barreto.fleetctrl.data.database.entities.Organization
+import dev.barreto.fleetctrl.viewmodels.OrganizationViewModel
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ConnectivityScreen(
+    onBack: () -> Unit,
+    organizationViewModel: OrganizationViewModel,
+    modifier: Modifier = Modifier
+) {
+    val userOrganizations by organizationViewModel.userOrganizations.collectAsState()
+    val currentOrganization by organizationViewModel.currentOrganization.collectAsState()
+    val isLoading by organizationViewModel.isLoading.collectAsState()
+    val message by organizationViewModel.message.collectAsState()
+    val error by organizationViewModel.error.collectAsState()
+    val currentRole by organizationViewModel.currentRole.collectAsState()
+
+    var showJoinDialog by remember { mutableStateOf(false) }
+    var showCreateDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
+
+    // Pull-to-refresh
+    val isRefreshing by organizationViewModel.isRefreshing.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = {
+            coroutineScope.launch {
+                organizationViewModel.forceRefreshOrganizations()
+            }
+        }
+    )
+    
+    LaunchedEffect(Unit) {
+        organizationViewModel.clearMessages()
+    }
+    
+    val navBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val screenHeight = androidx.compose.ui.platform.LocalConfiguration.current.screenHeightDp
+    val contentBottom = navBottomPadding + if (screenHeight < 640) 56.dp else 96.dp
+
+    Box(modifier = modifier
+        .fillMaxSize()
+        .pullRefresh(pullRefreshState)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .padding(bottom = contentBottom)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            // Header
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        Icons.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.cd_back)
+                    )
+                }
+                Column {
+                    Text(
+                        text = stringResource(R.string.connectivity_title),
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = stringResource(R.string.connectivity_subtitle),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            
+            // Organização Atual
+            if (currentOrganization != null) {
+                CurrentOrganizationCard(
+                    organization = currentOrganization!!,
+                    role = currentRole,
+                    onLeave = { organizationViewModel.leaveOrganization() },
+                    onEdit = { showEditDialog = true }
+                )
+            } else {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Default.Business,
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = stringResource(R.string.connectivity_no_org),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+            
+            // Ações
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Button(
+                    onClick = { showJoinDialog = true },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        Icons.Default.GroupAdd,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(stringResource(R.string.connectivity_join_org))
+                }
+                
+                Button(
+                    onClick = { showCreateDialog = true },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(stringResource(R.string.connectivity_create_org))
+                }
+            }
+            
+            // Lista de Organizações
+            if (userOrganizations.isNotEmpty()) {
+                Text(
+                    text = stringResource(R.string.connectivity_my_organizations),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                userOrganizations.forEach { organization ->
+                    OrganizationItem(
+                        organization = organization,
+                        isSelected = organization.id == currentOrganization?.id,
+                        onSelect = { organizationViewModel.selectOrganization(organization) }
+                    )
+                }
+            }
+        }
+
+        PullRefreshIndicator(isRefreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+    }
+    
+    if (showJoinDialog) {
+        JoinOrganizationDialog(
+            onDismiss = { showJoinDialog = false },
+            onJoin = { code ->
+                organizationViewModel.joinOrganization(code)
+                showJoinDialog = false
+            }
+        )
+    }
+    
+    if (showCreateDialog) {
+        CreateOrganizationDialog(
+            onDismiss = { showCreateDialog = false },
+            onCreate = { name ->
+                organizationViewModel.createOrganization(name)
+                showCreateDialog = false
+            }
+        )
+    }
+
+    if (showEditDialog) {
+        currentOrganization?.let { org ->
+            EditOrganizationDialog(
+                organization = org,
+                onDismiss = { showEditDialog = false },
+                onSave = { name, description ->
+                    organizationViewModel.updateOrganization(name, description)
+                    showEditDialog = false
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun CurrentOrganizationCard(
+    organization: Organization,
+    role: String?,
+    onLeave: () -> Unit,
+    onEdit: () -> Unit
+) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.connectivity_current_organization),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (role == "owner") {
+                        IconButton(onClick = onEdit) {
+                            Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.cd_edit))
+                        }
+                    }
+                    OutlinedButton(
+                        onClick = onLeave,
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Icon(
+                            Icons.Default.ExitToApp,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(stringResource(R.string.connectivity_leave))
+                    }
+                }
+            }
+            
+            Text(
+                text = organization.name,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+
+            role?.let {
+                Text(
+                    text = "Seu cargo: $it",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+            
+            organization.description?.let { description ->
+                if (description.isNotBlank()) {
+                    Text(
+                        text = description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.connectivity_code, organization.code),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                
+                IconButton(
+                    onClick = {
+                        clipboardManager.setText(AnnotatedString(organization.code))
+                        android.widget.Toast.makeText(context, "Código copiado!", android.widget.Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = Modifier.size(20.dp)
+                ) {
+                    Icon(
+                        Icons.Default.ContentCopy,
+                        contentDescription = stringResource(R.string.connectivity_copy_code),
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun OrganizationItem(
+    organization: Organization,
+    isSelected: Boolean,
+    onSelect: () -> Unit
+) {
+    val context = LocalContext.current
+    val clipboardManager = LocalClipboardManager.current
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSelected) 
+                MaterialTheme.colorScheme.primaryContainer 
+            else 
+                MaterialTheme.colorScheme.surface
+        ),
+        onClick = onSelect
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = organization.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Medium
+                )
+
+                Text(
+                    text = stringResource(R.string.connectivity_code, organization.code),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    clipboardManager.setText(AnnotatedString(organization.code))
+                    android.widget.Toast.makeText(context, "Código copiado!", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            ) {
+                Icon(
+                    Icons.Default.ContentCopy,
+                    contentDescription = stringResource(R.string.connectivity_copy_code),
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            if (isSelected) {
+                Icon(
+                    Icons.Default.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun JoinOrganizationDialog(
+    onDismiss: () -> Unit,
+    onJoin: (String) -> Unit
+) {
+    var code by remember { mutableStateOf("") }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.connectivity_join_dialog_title)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.connectivity_join_dialog_message))
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = code,
+                    onValueChange = { code = it.uppercase() },
+                    label = { Text(stringResource(R.string.connectivity_join_dialog_code)) },
+                    placeholder = { Text(stringResource(R.string.connectivity_join_dialog_code_placeholder)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { onJoin(code) },
+                enabled = code.isNotBlank()
+            ) {
+                Text(stringResource(R.string.connectivity_join_dialog_join))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.connectivity_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun CreateOrganizationDialog(
+    onDismiss: () -> Unit,
+    onCreate: (String) -> Unit
+) {
+    var name by remember { mutableStateOf("") }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.connectivity_create_dialog_title)) },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(stringResource(R.string.connectivity_organization_name)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text(stringResource(R.string.connectivity_organization_description)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
+                
+                // Checkbox para aprovação manual
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Checkbox(
+                                checked = requiresApproval,
+                                onCheckedChange = { requiresApproval = it }
+                            )
+                            
+                            Column(
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(
+                                    text = "Aprovação manual necessária",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                Text(
+                                    text = if (requiresApproval) 
+                                        "Usuários precisarão solicitar entrada e aguardar sua aprovação" 
+                                    else 
+                                        "Usuários podem entrar diretamente com o código da organização",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { 
+                    onCreate(name, description, requiresApproval)
+                },
+                enabled = name.isNotBlank()
+            ) {
+                Text(stringResource(R.string.connectivity_create))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.connectivity_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun EditOrganizationDialog(
+    organization: Organization,
+    onDismiss: () -> Unit,
+    onSave: (String, String) -> Unit
+) {
+    var name by remember { mutableStateOf(organization.name) }
+    var description by remember { mutableStateOf(organization.description ?: "") }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Editar Organização") },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(stringResource(R.string.connectivity_organization_name)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text(stringResource(R.string.connectivity_organization_description)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { 
+                    onSave(name, description)
+                },
+                enabled = name.isNotBlank()
+            ) {
+                Text(stringResource(R.string.dialog_confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.dialog_cancel))
+            }
+        }
+    )
+}
