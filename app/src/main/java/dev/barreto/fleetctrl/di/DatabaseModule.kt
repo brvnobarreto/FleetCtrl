@@ -125,9 +125,14 @@ object DatabaseModule {
     @Singleton
     fun provideOrganizationRepository(
         firestore: com.google.firebase.firestore.FirebaseFirestore,
-        firebaseAuth: com.google.firebase.auth.FirebaseAuth
+        firebaseAuth: com.google.firebase.auth.FirebaseAuth,
+        notificationRepository: NotificationRepository
     ): dev.barreto.fleetctrl.data.repositories.OrganizationRepository {
-        return dev.barreto.fleetctrl.data.repositories.OrganizationRepository(firestore, firebaseAuth)
+        return dev.barreto.fleetctrl.data.repositories.OrganizationRepository(
+            firestore,
+            firebaseAuth,
+            notificationRepository
+        )
     }
 
     @Provides

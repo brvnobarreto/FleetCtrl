@@ -13,7 +13,8 @@ import javax.inject.Singleton
 @Singleton
 class OrganizationRepository @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val notificationRepository: NotificationRepository
 ) {
     
     private fun anyToDate(value: Any?): Date {
@@ -152,6 +153,22 @@ class OrganizationRepository @Inject constructor(
                 role = "viewer",
                 userEmail = currentUser.email ?: ""
             )
+            // Criar notificação para o OWNER da organização
+            try {
+                val title = "Novo membro na organização"
+                val message = "${currentUser.email ?: "Um usuário"} entrou na organização ${organization.name}"
+                val notif = dev.barreto.fleetctrl.data.database.entities.Notification(
+                    id = java.util.UUID.randomUUID().toString(),
+                    userId = organization.ownerId,
+                    organizationId = organization.id,
+                    type = dev.barreto.fleetctrl.data.database.entities.NotificationType.JOIN_APPROVED,
+                    title = title,
+                    message = message,
+                    relatedUserId = currentUser.uid,
+                    relatedUserEmail = currentUser.email
+                )
+                notificationRepository.createNotification(notif)
+            } catch (_: Exception) {}
             
             Result.success("Entrada na organização realizada com sucesso!")
         } catch (e: Exception) {
