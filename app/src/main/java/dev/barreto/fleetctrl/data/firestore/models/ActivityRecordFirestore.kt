@@ -45,7 +45,7 @@ data class ActivityRecordFirestore(
     fun toLocal(): ActivityRecord {
         return ActivityRecord(
             id = this.id,
-            vehicleId = this.vehicleId,
+            vehicleId = this.vehicleId.takeIf { it > 0 },
             plate = this.plate,
             driver = this.driver,
             date = this.date?.toLocalDateTime() ?: LocalDateTime.now(),
