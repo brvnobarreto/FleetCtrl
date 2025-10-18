@@ -10,10 +10,11 @@ service cloud.firestore {
     match /notifications/{notificationId} {
       // Only receiver can read
       allow read: if isSignedIn() && request.auth.uid == resource.data.userId;
-      // Allow create if the writer is a member of the org and is the related user (self-submission)
-      allow create: if isSignedIn() &&
-        isMember(request.resource.data.organizationId) &&
-        request.resource.data.relatedUserId == request.auth.uid;
+      // Allow create by either the related user (actor) or the receiver (owner)
+      allow create: if isSignedIn() && (
+        request.resource.data.relatedUserId == request.auth.uid ||
+        request.resource.data.userId == request.auth.uid
+      );
       // Allow receiver to mark as read
       allow update: if isSignedIn() && request.auth.uid == resource.data.userId;
     }
