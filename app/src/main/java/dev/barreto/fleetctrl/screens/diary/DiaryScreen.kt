@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -88,6 +89,9 @@ fun DiaryScreen(
         .pullRefresh(pullRefreshState)) {
         Column(Modifier.fillMaxSize()) {
             // Filtros - sempre visíveis
+            var showSearch by remember { mutableStateOf(false) }
+            var searchQuery by remember { mutableStateOf("") }
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,13 +114,30 @@ fun DiaryScreen(
                     onClick = { filter = FilterMode.LOCAL },
                     label = { Text("Locais") }
                 )
+
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = { showSearch = !showSearch }) {
+                    Icon(Icons.Default.Search, contentDescription = "Buscar")
+                }
             }
-            val filtered = remember(vehicles, filter, currentOrgId) {
-                when (filter) {
+            if (showSearch) {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    singleLine = true,
+                    label = { Text("Buscar veículo") }
+                )
+            }
+            val filtered = remember(vehicles, filter, currentOrgId, searchQuery) {
+                val base = when (filter) {
                     FilterMode.ALL -> vehicles
                     FilterMode.ORG -> vehicles.filter { it.organizationId == currentOrgId }
                     FilterMode.LOCAL -> vehicles.filter { it.organizationId.isNullOrBlank() }
                 }
+                if (searchQuery.isBlank()) base else base.filter { dev.barreto.fleetctrl.utils.SearchIndex.vehicleMatches(it, searchQuery) }
             }
 
             val navBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -87,6 +88,9 @@ fun FleetScreen(
 
             // Cabeçalho de filtro
             Column(modifier = Modifier.fillMaxSize()) {
+                var showSearch by remember { mutableStateOf(false) }
+                var searchQuery by remember { mutableStateOf("") }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -109,14 +113,31 @@ fun FleetScreen(
                         onClick = { filter = FilterMode.LOCAL },
                         label = { Text("Locais") }
                     )
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = { showSearch = !showSearch }) {
+                        Icon(Icons.Default.Search, contentDescription = "Buscar")
+                    }
                 }
 
-                val filteredVehicles = remember(vehicles, filter, currentOrgId) {
-                    when (filter) {
+                if (showSearch) {
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        singleLine = true,
+                        label = { Text("Buscar veículo") }
+                    )
+                }
+
+                val filteredVehicles = remember(vehicles, filter, currentOrgId, searchQuery) {
+                    val base = when (filter) {
                         FilterMode.ALL -> vehicles
                         FilterMode.ORG -> vehicles.filter { it.organizationId == currentOrgId }
                         FilterMode.LOCAL -> vehicles.filter { it.organizationId.isNullOrBlank() }
                     }
+                    if (searchQuery.isBlank()) base else base.filter { dev.barreto.fleetctrl.utils.SearchIndex.vehicleMatches(it, searchQuery) }
                 }
 
                 LazyColumn(
